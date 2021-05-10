@@ -32,8 +32,8 @@ dependencies:
   amplify_core: ^0.1.4
   amplify_flutter: ^0.1.4
   amplify_auth_cognito: ^0.1.4
-  amplify_api: ^0.1.4
   amplify_datastore: ^0.1.4
+  amplify_analytics_pinpoint: ^0.1.4
   #Bloc 
   flutter_bloc: ^7.0.0
   #Other
