@@ -10,11 +10,11 @@ abstract class AmplifyauthState extends Equatable {
 class AmplifyauthInitial extends AmplifyauthState {}
 
 class AmplifyauthLoaded extends AmplifyauthState {
-  final List<Users> users;
+  final String loaded;
 
-  AmplifyauthLoaded({this.users});
+  AmplifyauthLoaded({this.loaded});
   @override
-  List<Object> get props => [users];
+  List<Object> get props => [loaded];
 }
 
 class AmplifyauthError extends AmplifyauthState {

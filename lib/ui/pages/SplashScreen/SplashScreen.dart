@@ -63,7 +63,7 @@ class _SplasScreenState extends State<SplasScreen> {
                 ),
               )
             : Center(
-              child: Text('Conectando...'),
+              child: Text('Sin conexion a internet'),
             ));
   }
 }

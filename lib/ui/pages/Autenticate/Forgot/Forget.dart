@@ -2,21 +2,18 @@ import 'package:amplify/domain/cubit/amplifyauth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key key}) : super(key: key);
+class Forget extends StatefulWidget {
+  Forget({Key key}) : super(key: key);
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _ForgetState createState() => _ForgetState();
 }
 
-class _RegisterState extends State<Register> {
-  TextEditingController email = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  bool oscure = false;
-
-  TextEditingController password = TextEditingController();
-
-  @override
+class _ForgetState extends State<Forget> {
+   final _formKey = GlobalKey<FormState>();
+  TextEditingController _controller = TextEditingController();
+  TextEditingController _code = TextEditingController();
+   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -46,7 +43,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text('Estas a un solo paso.',
+                Text('Recupera tu contraseña.',
                     style: TextStyle(
                         fontSize: 26,
                         color: Colors.white,
@@ -57,7 +54,7 @@ class _RegisterState extends State<Register> {
                   height: 30,
                 ),
                 Text(
-                  'Bienvenido a un nuevo mundo\nDescubre lo que tenemos preparado para ti.',
+                  'Enviaremos un email a tu correo registrado\nCon este podras reestablecer tu contraseña.',
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -72,32 +69,9 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(color: Colors.white),
                   validator: (value) =>
                       value.isEmpty ? 'Please enter a email' : null,
-                  controller: email,
+                  controller: _controller,
                   decoration: InputDecoration(
                       labelText: 'Email',
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16))),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  obscureText: oscure,
-                  validator: (value) =>
-                      value.isEmpty ? 'Please enter a password' : null,
-                  controller: password,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          icon: Icon(Icons.security_rounded),
-                          onPressed: () {
-                            setState(() {
-                              oscure = !oscure;
-                            });
-                          }),
-                      labelText: 'Password',
                       labelStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -117,20 +91,14 @@ class _RegisterState extends State<Register> {
                         ));
                         await context
                             .read<AmplifyauthCubit>()
-                            .signUp(email: email.text, password: password.text);
+                            .forgot(email: _controller.text);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            'Le enviamos un email con su codigo de confirmacion',
+                            'Cuenta confirmada',
                             style: TextStyle(color: Color(0xff212029)),
                           ),
                           backgroundColor: Colors.white,
                         ));
-                        Future.delayed(
-                            Duration(seconds: 1),
-                            () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Register())));
                       } else {
                         print('invaido');
                       }
@@ -143,7 +111,7 @@ class _RegisterState extends State<Register> {
                       width: size.width * 0.8,
                       child: Center(
                         child: Text(
-                          'Register',
+                          'Recuperar',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700),
                         ),

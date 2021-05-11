@@ -2,21 +2,18 @@ import 'package:amplify/domain/cubit/amplifyauth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key key}) : super(key: key);
+class Confirmed extends StatefulWidget {
+  Confirmed({Key key}) : super(key: key);
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _ConfirmedState createState() => _ConfirmedState();
 }
 
-class _RegisterState extends State<Register> {
-  TextEditingController email = TextEditingController();
+class _ConfirmedState extends State<Confirmed> {
   final _formKey = GlobalKey<FormState>();
-  bool oscure = false;
-
-  TextEditingController password = TextEditingController();
-
-  @override
+  TextEditingController _controller = TextEditingController();
+  TextEditingController _code = TextEditingController();
+   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -57,7 +54,7 @@ class _RegisterState extends State<Register> {
                   height: 30,
                 ),
                 Text(
-                  'Bienvenido a un nuevo mundo\nDescubre lo que tenemos preparado para ti.',
+                  'Bienvenido a un nuevo mundo\nSolo falta que confirmes tu codigo enviado a tu email registrado.',
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -72,7 +69,7 @@ class _RegisterState extends State<Register> {
                   style: TextStyle(color: Colors.white),
                   validator: (value) =>
                       value.isEmpty ? 'Please enter a email' : null,
-                  controller: email,
+                  controller: _controller,
                   decoration: InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(color: Colors.white),
@@ -85,26 +82,18 @@ class _RegisterState extends State<Register> {
                 ),
                 TextFormField(
                   style: TextStyle(color: Colors.white),
-                  obscureText: oscure,
                   validator: (value) =>
-                      value.isEmpty ? 'Please enter a password' : null,
-                  controller: password,
+                      value.isEmpty ? 'Please enter a Code' : null,
+                  controller: _code,
                   decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          icon: Icon(Icons.security_rounded),
-                          onPressed: () {
-                            setState(() {
-                              oscure = !oscure;
-                            });
-                          }),
-                      labelText: 'Password',
+                      labelText: 'Code',
                       labelStyle: TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                           borderRadius: BorderRadius.circular(16))),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.30),
+                  padding: EdgeInsets.only(top: size.height * 0.25),
                   child: GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState.validate()) {
@@ -117,20 +106,14 @@ class _RegisterState extends State<Register> {
                         ));
                         await context
                             .read<AmplifyauthCubit>()
-                            .signUp(email: email.text, password: password.text);
+                            .confirmedCode(email: _controller.text, code: _code.text);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            'Le enviamos un email con su codigo de confirmacion',
+                            'Cuenta confirmada',
                             style: TextStyle(color: Color(0xff212029)),
                           ),
                           backgroundColor: Colors.white,
                         ));
-                        Future.delayed(
-                            Duration(seconds: 1),
-                            () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Register())));
                       } else {
                         print('invaido');
                       }
@@ -143,7 +126,7 @@ class _RegisterState extends State<Register> {
                       width: size.width * 0.8,
                       child: Center(
                         child: Text(
-                          'Register',
+                          'Confirmar cuenta',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700),
                         ),

@@ -10,14 +10,26 @@ class Auth extends AbstractAuth {
   @override
   Future<ServicesResult> signUp({String email, String password}) async {
     try {
-      Map<String, String> userAttributes = {'email': 'email@example.com'};
-
-      await amplify.Auth.signUp(
+      Map<String, String> userAttributes = {
+        'email': email,
+        // additional attributes as needed
+      };
+      print('entro en try');
+      print('Intentamos agregar el usuario a AWS');
+      final resp = await amplify.Auth.signUp(
           username: email,
           password: password,
           options: CognitoSignUpOptions(userAttributes: userAttributes));
-      return ServicesResult(status: true, success: 'Registrado');
-    } on AmplifyException {
+      print('Estatus que recibo' + resp.isSignUpComplete.toString());
+      if (resp.isSignUpComplete) {
+        print('Agregado');
+        return ServicesResult(status: true, success: 'Registrado');
+      } else {
+        print('Imcompleto');
+        return ServicesResult(status: false, success: 'Incompleto');
+      }
+    } on AuthException catch (e) {
+      print(e.toString());
       return ServicesResult(status: false, error: 'No registrado');
     }
   }
@@ -25,13 +37,47 @@ class Auth extends AbstractAuth {
   @override
   Future<ServicesResult> signIn({String email, String password}) async {
     try {
-      await amplify.Auth.signIn(
+     final resp = await amplify.Auth.signIn(
         username: email,
         password: password,
       );
-      return ServicesResult(status: true, success: 'Logeado');
+      if (resp.isSignedIn) {
+        return ServicesResult(status: true, success: 'Logeado');
+      } else {
+        return ServicesResult(status: false, error: 'No Logeado');
+      }
     } on AmplifyException {
       return ServicesResult(status: false, error: 'No Logeado');
+    }
+  }
+
+  @override
+  Future<ServicesResult> confirmedCode({String email, String code}) async {
+    try {
+    final resp = await amplify.Auth.confirmSignUp(username: email, confirmationCode: code);
+     if (resp.isSignUpComplete) {
+        return ServicesResult(status: true, success: 'Confirmado');
+      } else {
+        return ServicesResult(status: false, success: 'no Confirmado');
+      }
+    } on AuthException catch (e) {
+      print(e.toString());
+      return ServicesResult(status: false, error: 'no Confirmado');
+    }
+  }
+
+  @override
+  Future<ServicesResult> forget({String email}) async {
+    try {
+      final resp = await amplify.Auth.resetPassword(username: email);
+      if (resp.isPasswordReset) {
+        return ServicesResult(status: true, success: 'Email enviado');
+      } else {
+        return ServicesResult(status: false, success: 'Email no enviado');
+      }
+    } on AuthException catch (e) {
+      print(e.toString());
+       return ServicesResult(status: false, success: 'Email no enviado');
     }
   }
 }

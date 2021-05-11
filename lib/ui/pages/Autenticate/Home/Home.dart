@@ -1,3 +1,5 @@
+import 'package:amplify/ui/pages/Autenticate/Confirmed/Confirmed.dart';
+import 'package:amplify/ui/pages/Autenticate/Forgot/Forget.dart';
 import 'package:amplify/ui/pages/Autenticate/Login/Login.dart';
 import 'package:amplify/ui/pages/Autenticate/Register/Register.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +34,16 @@ class _HomeState extends State<Home> {
         krigth = 0;
         switchbool = true;
       });
-     Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+      Future.delayed(
+          Duration(milliseconds: 300),
+          () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Register())));
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Future.delayed(
+          Duration(milliseconds: 300),
+          () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Login())));
+
       setState(() {
         kleft = 0;
         krigth = 165;
@@ -88,7 +97,7 @@ class _HomeState extends State<Home> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: 20, right: 20, top: size.height * 0.15),
+                    left: 20, right: 20, top: size.height * 0.10),
                 child: Container(
                   padding: EdgeInsets.all(0),
                   alignment: Alignment.bottomCenter,
@@ -96,7 +105,7 @@ class _HomeState extends State<Home> {
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(18),
                       color: Colors.white),
-                  height: 80,
+                  height: 70,
                   width: size.width * 0.8,
                   child: Stack(
                     children: [
@@ -104,7 +113,10 @@ class _HomeState extends State<Home> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           GestureDetector(
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Login())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Login())),
                             child: Container(
                               child: Center(
                                 child: Text(
@@ -115,12 +127,15 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w800),
                                 ),
                               ),
-                              height: 80,
+                              height: 70,
                               width: size.width * 0.4,
                             ),
                           ),
                           GestureDetector(
-                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Register())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Register())),
                             child: Container(
                               child: Center(
                                 child: Text(
@@ -131,7 +146,7 @@ class _HomeState extends State<Home> {
                                       fontWeight: FontWeight.w800),
                                 ),
                               ),
-                              height: 80,
+                              height: 70,
                               width: size.width * 0.4,
                             ),
                           ),
@@ -140,7 +155,8 @@ class _HomeState extends State<Home> {
                       AnimatedPositioned(
                         left: kleft,
                         right: krigth,
-                        duration: Duration(milliseconds: kleft != 0 ? 500 : 300),
+                        duration:
+                            Duration(milliseconds: kleft != 0 ? 500 : 300),
                         child: GestureDetector(
                           onHorizontalDragEnd: (DragEndDetails details) =>
                               horizontalend(details, size),
@@ -150,7 +166,7 @@ class _HomeState extends State<Home> {
                             decoration: BoxDecoration(
                                 color: Color(0xff212029),
                                 borderRadius: BorderRadius.circular(22)),
-                            height: 80,
+                            height: 70,
                             width: size.width * 0.45,
                             child: Center(
                               child: Text(
@@ -168,6 +184,41 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '¿Olvidaste tu contraseña? ',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Forget())),
+                      child: Text(
+                        'HAS CLICK AQUI',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Confirmed())),
+                      child: Text(
+                        'HAS CLICK AQUI',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Text(
+                      'para confirmar tu codigo ',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    
+                  ],
+                ),
             ],
           ),
         ),
