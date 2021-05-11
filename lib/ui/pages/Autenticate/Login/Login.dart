@@ -1,3 +1,5 @@
+import 'package:amplify/domain/cubit/amplifyauth_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -8,157 +10,133 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool switchbool = false;
-  String helpers = '';
-  double kleft = 0;
-  double krigth = 165;
-  double manejo;
-
-  horizontalupdate(DragUpdateDetails detail, Size size) {
-    manejo = detail.localPosition.dx / 50;
-    print(manejo);
-    setState(() {
-      krigth = krigth - (manejo);
-      kleft = kleft + (manejo);
-    });
-  }
-
-  horizontalend(DragEndDetails detail, Size size) {
-    if (kleft > 50) {
-      setState(() {
-        kleft = 165;
-        krigth = 0;
-        switchbool = true;
-      });
-    } else {
-      setState(() {
-        kleft = 0;
-        krigth = 165;
-        switchbool = false;
-      });
-    }
-  }
-
+  TextEditingController email = TextEditingController();
+  bool oscure = false;
+  TextEditingController password = TextEditingController();
+ @override
+ void initState() { 
+   super.initState();
+   
+ }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final _formKey = GlobalKey<FormState>();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff212029),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              Image.asset(
-                'assets/image/1.png',
-                height: size.height * 0.4,
-                width: size.width,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Text(
-                'Descubre un nuevo mundo',
-                style: TextStyle(
-                    fontSize: 26,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  'La escencia  de lo que eres te espera, tus ojos te enseñaran el camino',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: 20, right: 20, top: size.height * 0.15),
-                child: Container(
-                  padding: EdgeInsets.all(0),
-                  alignment: Alignment.bottomCenter,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(18),
-                      color: Colors.white),
-                  height: 80,
-                  width: size.width * 0.8,
-                  child: Stack(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            child: Center(
-                              child: Text(
-                                'Ingresar',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color(0xffFFCA00),
-                                    fontWeight: FontWeight.w800),
-                              ),
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: Color(0xff212029),
+          leading: IconButton(
+              color: Colors.white,
+              onPressed: () {
+                Navigator.pop(context);
+                print('back login');
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+              )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text('Estas a un solo paso.',
+                      style: TextStyle(
+                          fontSize: 26,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    'Bienvenido a un nuevo mundo\nDescubre lo que tenemos preparado para ti.',
+                    style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.left,
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  TextFormField(
+                    validator: (value) =>
+                        value.isEmpty ? 'Please enter a email' : null,
+                    controller: email,
+                    decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(16))),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    obscureText: oscure,
+                    validator: (value) =>
+                        value.isEmpty ? 'Please enter a password' : null,
+                    controller: password,
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            icon: Icon(Icons.security_rounded),
+                            onPressed: () {
+                              setState(() {
+                                oscure = !oscure;
+                              });
+                            }),
+                        labelText: 'Password',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(16))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: size.height * 0.35),
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (_formKey.currentState.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                              'Procesando...',
+                              style: TextStyle(color: Color(0xff212029)),
                             ),
-                            height: 80,
-                            width: size.width * 0.4,
-                          ),
-                          Container(
-                            child: Center(
-                              child: Text(
-                                'Registrar',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color(0xffFFCA00),
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ),
-                            height: 80,
-                            width: size.width * 0.4,
-                          ),
-                        ],
-                      ),
-                      AnimatedPositioned(
-                        left: kleft,
-                        right: krigth,
-                        duration: Duration(milliseconds: kleft != 0 ? 500 : 300),
-                        child: GestureDetector(
-                          onHorizontalDragEnd: (DragEndDetails details) =>
-                              horizontalend(details, size),
-                          onHorizontalDragUpdate: (DragUpdateDetails detail) =>
-                              horizontalupdate(detail, size),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xff212029),
-                                borderRadius: BorderRadius.circular(22)),
-                            height: 80,
-                            width: size.width * 0.45,
-                            child: Center(
-                              child: Text(
-                                switchbool == false ? 'Ingresar' : 'Registrar',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ),
+                            backgroundColor: Colors.white,
+                          ));
+                          await context.read<AmplifyauthCubit>().signIn();
+                        } else {}
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16)),
+                        height: 60,
+                        width: size.width * 0.8,
+                        child: Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  )
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

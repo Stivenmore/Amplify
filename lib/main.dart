@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Amplify',
           theme: ThemeData(
-            primarySwatch: Colors.purple,
+           accentColor: Colors.white, primaryColor: Colors.white
           ),
           home: SplasScreen()),
     );

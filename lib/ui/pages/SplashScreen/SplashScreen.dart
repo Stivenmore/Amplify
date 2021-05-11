@@ -1,5 +1,5 @@
 import 'package:amplify/amplifyconfiguration.dart';
-import 'package:amplify/ui/pages/Autenticate/Login/Login.dart';
+import 'package:amplify/ui/pages/Autenticate/Home/Home.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -31,7 +31,7 @@ class _SplasScreenState extends State<SplasScreen> {
         _amplifyConfigured = true;
       });
       Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Login()), (route) => false);
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Home()), (route) => false);
       });
     } on AmplifyAlreadyConfiguredException {
       print('No configure');
@@ -57,7 +57,7 @@ class _SplasScreenState extends State<SplasScreen> {
                       height: 10,
                     ),
                     CircularProgressIndicator(
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.purple,
                     )
                   ],
                 ),
