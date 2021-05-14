@@ -1,4 +1,5 @@
 import 'package:amplify/domain/cubit/amplifyauth_cubit.dart';
+import 'package:amplify/ui/pages/Autenticate/Confirmed/Confirmed.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -130,7 +131,7 @@ class _RegisterState extends State<Register> {
                             () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Register())));
+                                    builder: (context) => Confirmed())));
                       } else {
                         print('invaido');
                       }

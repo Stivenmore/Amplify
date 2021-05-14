@@ -17,7 +17,7 @@ class AmplifyauthCubit extends Cubit<AmplifyauthState> {
     emit(AmplifyauthInitial());
     ServicesResult result = await _auth.confirmedCode(email: email, code: code);
     if (result.status) {
-      emit(AmplifyauthLoaded(loaded: result.status.toString()));
+      emit(AmplifyauthSuccess(success: result.status.toString()));
     } else {
       emit(AmplifyauthError(error: result.status.toString()));
     }
@@ -29,9 +29,9 @@ class AmplifyauthCubit extends Cubit<AmplifyauthState> {
         await _auth.forget(email: email);
     if (result.status == true) {
       print('estatus true ' + result.success);
-      emit(AmplifyauthLoaded());
+      emit(AmplifyauthSuccess());
     } else {
-      print('estatus false ' + result.success);
+      print('estatus false ' + result.error);
         emit(AmplifyauthError());
     }
   }
@@ -42,9 +42,9 @@ class AmplifyauthCubit extends Cubit<AmplifyauthState> {
         await _auth.signUp(email: email, password: password);
     if (result.status == true) {
       print('estatus true ' + result.success);
-        emit(AmplifyauthLoaded());
+        emit(AmplifyauthSuccess());
     } else {
-      print('estatus false ' + result.success);
+      print('estatus false ' + result.error);
         emit(AmplifyauthError());
     }
   }

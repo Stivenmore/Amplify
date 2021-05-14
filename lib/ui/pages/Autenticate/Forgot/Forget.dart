@@ -12,7 +12,8 @@ class Forget extends StatefulWidget {
 class _ForgetState extends State<Forget> {
    final _formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
-  TextEditingController _code = TextEditingController();
+
+  
    @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

@@ -109,7 +109,7 @@ class _ConfirmedState extends State<Confirmed> {
                             .confirmedCode(email: _controller.text, code: _code.text);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
-                            'Cuenta confirmada',
+                            'Proceso terminado',
                             style: TextStyle(color: Color(0xff212029)),
                           ),
                           backgroundColor: Colors.white,
