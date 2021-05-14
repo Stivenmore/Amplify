@@ -1,19 +1,17 @@
 import 'package:amplify/domain/cubit/amplifyauth_cubit.dart';
-import 'package:amplify/ui/pages/DashBoard/DashBoard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class Confirmed extends StatefulWidget {
-  Confirmed({Key key}) : super(key: key);
+class ResetCode extends StatefulWidget {
+  ResetCode({Key key}) : super(key: key);
 
   @override
-  _ConfirmedState createState() => _ConfirmedState();
+  _ResetCodeState createState() => _ResetCodeState();
 }
 
-class _ConfirmedState extends State<Confirmed> {
+class _ResetCodeState extends State<ResetCode> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _controller = TextEditingController();
-  TextEditingController _code = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,7 +53,7 @@ class _ConfirmedState extends State<Confirmed> {
                   height: 30,
                 ),
                 Text(
-                  'Bienvenido a un nuevo mundo\nSolo falta que confirmes tu codigo enviado a tu email registrado.',
+                  'Agrega tu email para registrado para reenviarte el codigo',
                   style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,
@@ -81,18 +79,6 @@ class _ConfirmedState extends State<Confirmed> {
                 const SizedBox(
                   height: 30,
                 ),
-                TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  validator: (value) =>
-                      value.isEmpty ? 'Please enter a Code' : null,
-                  controller: _code,
-                  decoration: InputDecoration(
-                      labelText: 'Code',
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16))),
-                ),
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.25),
                   child: GestureDetector(
@@ -107,18 +93,22 @@ class _ConfirmedState extends State<Confirmed> {
                         ));
                         final bool resp = await context
                             .read<AmplifyauthCubit>()
-                            .confirmedCode(
-                                email: _controller.text, code: _code.text);
+                            .resetcode(
+                                email: _controller.text);
                         if (resp == true) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            'Enviado con exito',
+                            style: TextStyle(color: Color(0xff212029)),
+                          ),
+                          backgroundColor: Colors.white,
+                        ));
                           Future.delayed(
                               Duration(milliseconds: 1500),
-                              () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DashBoard())));
+                              () => Navigator.pop(context));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Codigo no encontrado')));
+                              SnackBar(content: Text('Error')));
                         }
                       } else {
                         print('invaido');
@@ -132,7 +122,7 @@ class _ConfirmedState extends State<Confirmed> {
                       width: size.width * 0.8,
                       child: Center(
                         child: Text(
-                          'Confirmar cuenta',
+                          'Reenviar Codigo',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w700),
                         ),

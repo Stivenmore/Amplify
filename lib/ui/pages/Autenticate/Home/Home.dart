@@ -219,6 +219,23 @@ class _HomeState extends State<Home> {
                     
                   ],
                 ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Reenviar codigo de confirmacion',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Confirmed())),
+                      child: Text(
+                        'HAS CLICK AQUI',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

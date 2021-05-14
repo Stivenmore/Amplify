@@ -11,41 +11,64 @@ class AmplifyauthCubit extends Cubit<AmplifyauthState> {
       : _auth = auth ?? Auth(),
         super(AmplifyauthInitial());
 
-  Future<void> signIn({String email, String password}) async {}
+  Future signIn({String email, String password}) async {
+    emit(AmplifyauthInitial());
+    ServicesResult result =
+        await _auth.signIn(email: email, password: password);
+    if (result.status) {
+      emit(AmplifyauthSuccess());
+    } else {
+      emit(AmplifyauthError());
+    }
+  }
 
-  Future<void> confirmedCode({String email, String code}) async {
+  Future confirmedCode({String email, String code}) async {
     emit(AmplifyauthInitial());
     ServicesResult result = await _auth.confirmedCode(email: email, code: code);
+    print('El estado es ' + result.status.toString());
     if (result.status) {
       emit(AmplifyauthSuccess(success: result.status.toString()));
     } else {
       emit(AmplifyauthError(error: result.status.toString()));
     }
+    return result.status;
   }
 
-  Future<void> forgot({String email}) async {
+  Future forgot({String email}) async {
     emit(AmplifyauthInitial());
-    ServicesResult result =
-        await _auth.forget(email: email);
+    ServicesResult result = await _auth.forget(email: email);
     if (result.status == true) {
       print('estatus true ' + result.success);
       emit(AmplifyauthSuccess());
     } else {
       print('estatus false ' + result.error);
-        emit(AmplifyauthError());
+      emit(AmplifyauthError());
     }
   }
 
-  Future<void> signUp({String email, String password}) async {
+  Future resetcode({String email}) async {
+    emit(AmplifyauthInitial());
+    ServicesResult result = await _auth.resetCode(email: email);
+    if (result.status) {
+      print('status true' + result.success);
+      emit(AmplifyauthSuccess());
+    } else {
+       print('estatus false ' + result.error);
+      emit(AmplifyauthError());
+    }
+  }
+
+  Future signUp({String email, String password}) async {
     emit(AmplifyauthInitial());
     ServicesResult result =
         await _auth.signUp(email: email, password: password);
     if (result.status == true) {
       print('estatus true ' + result.success);
-        emit(AmplifyauthSuccess());
+      emit(AmplifyauthSuccess());
     } else {
       print('estatus false ' + result.error);
-        emit(AmplifyauthError());
+      emit(AmplifyauthError());
     }
+    return result.status;
   }
 }

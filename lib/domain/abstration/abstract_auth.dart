@@ -8,4 +8,6 @@ abstract class AbstractAuth {
   Future<ServicesResult> forget({String email});
 
   Future<ServicesResult> confirmedCode({String email, String code});
+
+  Future<ServicesResult> resetCode({String email});
 }

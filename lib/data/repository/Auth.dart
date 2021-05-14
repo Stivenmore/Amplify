@@ -20,6 +20,7 @@ class Auth extends AbstractAuth {
           username: email,
           password: password,
           options: CognitoSignUpOptions(userAttributes: userAttributes));
+
       print('Estatus que recibo' + resp.isSignUpComplete.toString());
       if (resp.isSignUpComplete) {
         print('Agregado');
@@ -37,7 +38,7 @@ class Auth extends AbstractAuth {
   @override
   Future<ServicesResult> signIn({String email, String password}) async {
     try {
-     final resp = await amplify.Auth.signIn(
+      final resp = await amplify.Auth.signIn(
         username: email,
         password: password,
       );
@@ -54,13 +55,15 @@ class Auth extends AbstractAuth {
   @override
   Future<ServicesResult> confirmedCode({String email, String code}) async {
     try {
-    final resp = await amplify.Auth.confirmSignUp(username: email, confirmationCode: code);
-     if (resp.isSignUpComplete) {
+      final resp = await amplify.Auth.confirmSignUp(
+          username: email, confirmationCode: code);
+      if (resp.isSignUpComplete) {
         return ServicesResult(status: true, success: 'Confirmado');
       } else {
         return ServicesResult(status: false, success: 'no Confirmado');
       }
     } on AuthException catch (e) {
+      print('Estoy en error de confirmetcode');
       print(e.toString());
       return ServicesResult(status: false, error: 'no Confirmado');
     }
@@ -77,7 +80,23 @@ class Auth extends AbstractAuth {
       }
     } on AuthException catch (e) {
       print(e.toString());
-       return ServicesResult(status: false, success: 'Email no enviado');
+      return ServicesResult(status: false, success: 'Email no enviado');
+    }
+  }
+
+  @override
+  Future<ServicesResult> resetCode({String email}) async {
+    try {
+      final resp = await amplify.Auth.resendSignUpCode(username: email);
+      if (resp.codeDeliveryDetails.destination.isNotEmpty) {
+        print(resp.codeDeliveryDetails.destination);
+        return ServicesResult(status: true, success: 'Email enviado');
+      } else {
+        return ServicesResult(status: false, success: 'Email no enviado');
+      }
+    } on AuthException catch (e) {
+      print(e.toString());
+      return ServicesResult(status: false, success: 'Email no enviado');
     }
   }
 }

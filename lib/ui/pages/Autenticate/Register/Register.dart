@@ -116,22 +116,28 @@ class _RegisterState extends State<Register> {
                           ),
                           backgroundColor: Colors.white,
                         ));
-                        await context
+                      final bool resp = await context
                             .read<AmplifyauthCubit>()
                             .signUp(email: email.text, password: password.text);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        if (resp) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(
                             'Le enviamos un email con su codigo de confirmacion',
                             style: TextStyle(color: Color(0xff212029)),
                           ),
                           backgroundColor: Colors.white,
                         ));
-                        Future.delayed(
+                          Future.delayed(
                             Duration(seconds: 1),
                             () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Confirmed())));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Lo sentimos este correo no puede ser registrado'))
+                          );
+                        }
                       } else {
                         print('invaido');
                       }
